@@ -8,9 +8,21 @@ module.exports = {
   }
 , 'Create Server instance': function(){
     var server = fspfs.createServer()
-      , server2 = new fspfs.Server({log:false}, ['*:*']);
+      , server2 = new fspfs.Server({log:false}, ['blog.3rd-Eden.com:1337']);
     
+    // server 2 options test
+    server2.log.should.be.false;
+    server2.origins.length.should.equal(1);
+    server2.origins[0].should.equal('blog.3rd-Eden.com:1337');
+    
+    // server defaults
+    server.log.should.be.true;
+    server.origins.length.should.equal(1);
+    server.origins[0].should.equal('*:*');
+    
+    // instance checking, sanity check
     assert.ok(server instanceof fspfs.Server);
+    assert.ok(!!server.buffer);
   }
 , 'Add origin': function(){
     var server = fspfs.createServer();
@@ -48,6 +60,7 @@ module.exports = {
 , 'Responder': function(){
     var server = fspfs.createServer()
       , calls = 0
+      // dummy socket to emulate a `real` socket
       , dummySocket = {
           readyState: 'open'
         , end: function(buffer){
@@ -58,6 +71,22 @@ module.exports = {
       };
     
     server.responder(dummySocket);
+    calls.should.equal(1);
+  }
+, 'Event proxy': function(){
+    var server = fspfs.createServer()
+      , calls = 0;
+    
+    Object.keys(process.EventEmitter.prototype).forEach(function proxy(key){
+      assert.ok(!!server[key] && typeof server[key] === 'function');
+    });
+    
+    // test if it works by calling a none default event
+    server.on('pew', function(){
+      calls++;
+    });
+    
+    server.emit('pew');
     calls.should.equal(1);
   }
 };
