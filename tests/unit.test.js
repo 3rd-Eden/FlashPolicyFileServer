@@ -1,11 +1,16 @@
 var fspfs = require('../')
+  , http = require('http')
   , should = require('should')
   , assert = require('assert');
 
 module.exports = {
+  // Library version should be Semver compatible
   'Library version': function(){
      fspfs.version.should.match(/^\d+\.\d+\.\d+$/);
   }
+  
+  // Creating a server instace should not cause any problems
+  // either using the new Server or createServer method.
 , 'Create Server instance': function(){
     var server = fspfs.createServer()
       , server2 = new fspfs.Server({log:false}, ['blog.3rd-Eden.com:1337']);
@@ -23,6 +28,17 @@ module.exports = {
     // instance checking, sanity check
     assert.ok(server instanceof fspfs.Server);
     assert.ok(!!server.buffer);
+    
+    // more options testing
+    server = fspfs.createServer(['blog.3rd-Eden.com:80']);
+    server.origins.length.should.equal(1);
+    server.origins[0].should.equal('blog.3rd-Eden.com:80');
+    
+    server = fspfs.createServer({log:false},['blog.3rd-Eden.com:80']);
+    server.log.should.be.false;
+    server.origins.length.should.equal(1);
+    server.origins[0].should.equal('blog.3rd-Eden.com:80');
+    
   }
 , 'Add origin': function(){
     var server = fspfs.createServer();
