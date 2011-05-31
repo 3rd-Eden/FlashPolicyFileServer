@@ -112,7 +112,7 @@ module.exports = {
       , server = fspfs.createServer();
     
     httpserver.listen(port, function(){
-      server.listen(1336, httpserver, function(){
+      server.listen(port + 1, httpserver, function(){
         var client = net.createConnection(port);
         client.write('<policy-file-request/>\0');
         client.on('error', function(err){
@@ -134,4 +134,29 @@ module.exports = {
       });
     });
   }
+, 'server response': function(){
+    var port = 1340
+      , server = fspfs.createServer();
+      
+    server.listen(port, function(){
+      var client = net.createConnection(port);
+      client.write('<policy-file-request/>\0');
+      client.on('error', function(err){
+        assert.ok(!err, err)
+      });
+      client.on('data', function(data){
+      
+        var response = data.toString();
+        
+        response.indexOf('to-ports="*"').should.be.above(0);
+        response.indexOf('domain="*"').should.be.above(0);
+        response.indexOf('domain="google.com"').should.equal(-1);
+        
+        // clean up
+        client.destroy();
+        server.close();
+      });
+    });
+  }
+
 };
