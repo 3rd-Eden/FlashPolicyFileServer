@@ -1,5 +1,6 @@
 var fspfs = require('../')
   , http = require('http')
+  , net = require('net')
   , should = require('should')
   , assert = require('assert');
 
@@ -104,5 +105,33 @@ module.exports = {
     
     server.emit('pew');
     calls.should.equal(1);
+  }
+, 'inline response': function(){
+    var port = 1337
+      , httpserver = http.createServer(function(q,r){r.writeHead(200);r.end(':3')})
+      , server = fspfs.createServer();
+    
+    httpserver.listen(port, function(){
+      server.listen(1336, httpserver, function(){
+        var client = net.createConnection(port);
+        client.write('<policy-file-request/>\0');
+        client.on('error', function(err){
+          assert.ok(!err, err)
+        });
+        client.on('data', function(data){
+        
+          var response = data.toString();
+          
+          response.indexOf('to-ports="*"').should.be.above(0);
+          response.indexOf('domain="*"').should.be.above(0);
+          response.indexOf('domain="google.com"').should.equal(-1);
+          
+          // clean up
+          client.destroy();
+          server.close();
+          httpserver.close();
+        });
+      });
+    });
   }
 };
