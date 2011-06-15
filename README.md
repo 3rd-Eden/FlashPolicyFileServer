@@ -41,6 +41,21 @@ pf.listen(1337, function(){
 
 Changing port numbers can be handy if you do not want to run your server as root and have port 843 forward to a non root port number (aka a number above 1024).
 
+```js
+var pf = require('policyfile')
+  , http = require('http');
+
+server = http.createServer(function(q,r){r.writeHead(200);r.end('hello world')});
+server.listen(80);
+
+pf.createServer();
+pf.listen(1337, server, function(){
+  console.log(':3 yay')
+});
+```
+
+Support for serving inline requests over a existing HTTP connection as the FlashPlayer will first check port 843, but if it's unable to get a response there it will send a policy file request over port 80, which is usually your http server.
+
 #### server.add
 Adds more origins to the policy file you can add as many arguments as you like.
 
@@ -73,6 +88,9 @@ pf.close(); // OH NVM.
 
 ## API
 http://3rd-eden.com/FlashPolicyFileServer/
+
+## Examples
+See https://github.com/3rd-Eden/FlashPolicyFileServer/tree/master/examples for examples
 
 ## Licence
 
