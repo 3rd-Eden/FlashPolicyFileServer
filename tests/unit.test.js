@@ -1,5 +1,8 @@
 var fspfs = require('../')
+  , fs = require('fs')
   , http = require('http')
+  , https = require('https')
+  , tls = require('tls')
   , net = require('net')
   , should = require('should')
   , assert = require('assert');
@@ -106,8 +109,8 @@ module.exports = {
     server.emit('pew');
     calls.should.equal(1);
   }
-, 'inline response': function(){
-    var port = 1337
+, 'inline response http': function(){
+    var port = 1335
       , httpserver = http.createServer(function(q,r){r.writeHead(200);r.end(':3')})
       , server = fspfs.createServer();
     
@@ -158,5 +161,36 @@ module.exports = {
       });
     });
   }
-
+, 'inline response https': function(){
+    var port = 1345
+      , ssl = {
+          key: fs.readFileSync(__dirname + '/ssl/ssl.private.key').toString()
+        , cert: fs.readFileSync(__dirname + '/ssl/ssl.crt').toString()
+        }
+      , httpserver = https.createServer(ssl, function(q,r){r.writeHead(200);r.end(':3')})
+      , server = fspfs.createServer();
+    
+    httpserver.listen(port, function(){
+      server.listen(port + 1, httpserver, function(){
+        var client = net.createConnection(port);
+        client.write('<policy-file-request/>\0');
+        client.on('error', function(err){
+          assert.ok(!err, err)
+        });
+        client.on('data', function(data){
+        
+          var response = data.toString();
+          
+          response.indexOf('to-ports="*"').should.be.above(0);
+          response.indexOf('domain="*"').should.be.above(0);
+          response.indexOf('domain="google.com"').should.equal(-1);
+          
+          // clean up
+          client.destroy();
+          server.close();
+          httpserver.close();
+        });
+      });
+    });
+  }
 };
