@@ -164,6 +164,8 @@ code .this { color: #19469D; }</style>
       
       <span class="variable">me</span>.<span class="variable">socket</span>.<span class="variable">removeAllListeners</span>();
       <span class="keyword">delete</span> <span class="variable">me</span>.<span class="variable">socket</span>;
+
+      <span class="variable">me</span>.<span class="variable">emit</span>(<span class="string">'connect_failed'</span>, <span class="variable">err</span>);
     } <span class="keyword">else</span> {
       <span class="variable">me</span>.<span class="variable">log</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">me</span>.<span class="variable">log</span>(<span class="string">'FlashPolicyFileServer received a error event:\n'</span> + (<span class="variable">err</span>.<span class="variable">message</span> ? <span class="variable">err</span>.<span class="variable">message</span> : <span class="variable">err</span>));
     }
@@ -183,7 +185,7 @@ code .this { color: #19469D; }</style>
         <span class="variable">me</span>.<span class="variable">server</span>.<span class="variable">removeListener</span>(<span class="string">'connection'</span>, <span class="variable">me</span>.<span class="variable">server</span>[<span class="string">'@'</span>]);
       }
     }
-    <span class="variable">me</span>.<span class="variable">log</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">console</span>.<span class="variable">log</span>(<span class="keyword">new</span> <span class="class">Date</span>+ <span class="string">':@: Shutting down FlashPolicyFileServer'</span>);
+    <span class="variable">me</span>.<span class="variable">log</span> &<span class="variable">amp</span>;&<span class="variable">amp</span>; <span class="variable">me</span>.<span class="variable">log</span>(<span class="string">'Shutting down FlashPolicyFileServer'</span>);
   });
   
   <span class="comment">// Compile the initial `buffer`</span>
