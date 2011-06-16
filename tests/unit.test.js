@@ -24,7 +24,7 @@ module.exports = {
     server2.origins[0].should.equal('blog.3rd-Eden.com:1337');
     
     // server defaults
-    server.log.should.be.true;
+    (typeof server.log).should.be.equal('function');
     server.origins.length.should.equal(1);
     server.origins[0].should.equal('*:*');
     
