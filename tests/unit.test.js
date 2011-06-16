@@ -49,6 +49,20 @@ module.exports = {
     
     server.origins.length.should.equal(3);
     server.origins.indexOf('google.com:80').should.be.above(0);
+    
+    // don't allow duplicates
+    server.add('google.com:80', 'google.com:80');
+    
+    var i = server.origins.length
+      , count = 0;
+    
+    while(i--){
+      if (server.origins[i] === 'google.com:80'){
+        count++;
+      }
+    }
+    
+    count.should.equal(1);
   }
 , 'Remove origin': function(){
     var server = fspfs.createServer();
@@ -123,6 +137,7 @@ module.exports = {
         client.on('data', function(data){
         
           var response = data.toString();
+          console.log(response);
           
           response.indexOf('to-ports="*"').should.be.above(0);
           response.indexOf('domain="*"').should.be.above(0);
