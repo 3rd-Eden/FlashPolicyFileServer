@@ -9,7 +9,8 @@ npm install policyfile
 ## Usage
 
 The server is based on the regular and know `net` and `http` server patterns. So it you can just listen
-for all the events that a `net` based server emits etc.
+for all the events that a `net` based server emits etc. But there is one extra event, the `connect_failed`
+event. This event is triggered when we are unable to listen on the supplied port number.
 
 ### createServer
 Creates a new server instance and accepts 2 optional arguments:
