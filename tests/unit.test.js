@@ -11,7 +11,7 @@ module.exports = {
   'Library version': function(){
      fspfs.version.should.match(/^\d+\.\d+\.\d+$/);
   }
-  
+
   // Creating a server instace should not cause any problems
   // either using the new Server or createServer method.
 , 'Create Server instance': function(){
@@ -43,6 +43,7 @@ module.exports = {
     server.origins[0].should.equal('blog.3rd-Eden.com:80');
     
   }
+
 , 'Add origin': function(){
     var server = fspfs.createServer();
     server.add('google.com:80', 'blog.3rd-Eden.com:1337');
@@ -64,6 +65,7 @@ module.exports = {
     
     count.should.equal(1);
   }
+
 , 'Remove origin': function(){
     var server = fspfs.createServer();
     server.add('google.com:80', 'blog.3rd-Eden.com:1337');
@@ -73,6 +75,7 @@ module.exports = {
     server.origins.length.should.equal(2);
     server.origins.indexOf('google.com:80').should.equal(-1);
   }
+
 , 'Buffer': function(){
     var server = fspfs.createServer();
     
@@ -90,6 +93,7 @@ module.exports = {
     server.buffer.toString().indexOf('to-ports="80"').should.equal(-1);
     server.buffer.toString().indexOf('domain="google.com"').should.equal(-1);
   }
+
 , 'Responder': function(){
     var server = fspfs.createServer()
       , calls = 0
@@ -106,6 +110,7 @@ module.exports = {
     server.responder(dummySocket);
     calls.should.equal(1);
   }
+
 , 'Event proxy': function(){
     var server = fspfs.createServer()
       , calls = 0;
@@ -122,6 +127,7 @@ module.exports = {
     server.emit('pew');
     calls.should.equal(1);
   }
+
 , 'inline response http': function(){
     var port = 1335
       , httpserver = http.createServer(function(q,r){r.writeHead(200);r.end(':3')})
@@ -151,6 +157,7 @@ module.exports = {
       });
     });
   }
+
 , 'server response': function(){
     var port = 1340
       , server = fspfs.createServer();
@@ -175,6 +182,7 @@ module.exports = {
       });
     });
   }
+
 , 'inline response https': function(){
     var port = 1345
       , ssl = {
@@ -205,6 +213,19 @@ module.exports = {
           httpserver.close();
         });
       });
+    });
+  }
+
+, 'connect_failed': function(){
+    var server = fspfs.createServer();
+    
+    server.on('connect_failed', function(){
+      assert.ok(true);
+    });
+    
+    server.listen(function(){
+      assert.ok(false, 'Run this test without root access');
+      server.close();
     });
   }
 };
