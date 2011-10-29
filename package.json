@@ -13,20 +13,20 @@
   , "Flash Socket Policy File Server"
   , "cross domain"
   ]
-, "directories": {
-    "lib": "./lib"
+  , "directories": {
+      "lib": "./lib"
   }
-, "maintainers": [{
-    "name":"Arnout Kazemier"
-  , "email":"info@3rd-Eden.com"
-  , "web":"http://www.3rd-Eden.com"
+  , "maintainers": [{
+      "name":"Arnout Kazemier"
+    , "email":"info@3rd-Eden.com"
+    , "web":"http://blog.3rd-Eden.com"
   }]
-, "license": {
-    "type": "MIT"
-  , "url": "https://github.com/3rd-Eden/FlashPolicyFileServer/blob/master/LICENSE"
+  , "license": {
+      "type": "MIT"
+    , "url": "https://github.com/3rd-Eden/FlashPolicyFileServer/blob/master/LICENSE"
   }
-, "repository": {
-    "type": "git"
-  , "url" : "https://github.com/3rd-Eden/FlashPolicyFileServer.git"
+  , "repository": {
+      "type": "git"
+    , "url" : "https://github.com/3rd-Eden/FlashPolicyFileServer.git"
   }
 }
