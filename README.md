@@ -20,8 +20,8 @@ Creates a new server instance and accepts 2 optional arguments:
 -  `origins` **Array** An Array of origins that are allowed by the server (defaults to *:*)
 
 ```js
-var pf = require('policyfile');
-pf.createServer();
+var pf = require('policyfile').createServer();
+
 pf.listen();
 ```
 
@@ -33,8 +33,8 @@ Start listening on the server and it takes 3 optional arguments
 -  `callback` **Function** A callback function that is called when listening to the server was successful.
 
 ```js
-var pf = require('policyfile');
-pf.createServer();
+var pf = require('policyfile').createServer();
+
 pf.listen(1337, function(){
   console.log(':3 yay')
 });
@@ -43,13 +43,12 @@ pf.listen(1337, function(){
 Changing port numbers can be handy if you do not want to run your server as root and have port 843 forward to a non root port number (aka a number above 1024).
 
 ```js
-var pf = require('policyfile')
+var pf = require('policyfile').createServer()
   , http = require('http');
 
 server = http.createServer(function(q,r){r.writeHead(200);r.end('hello world')});
 server.listen(80);
 
-pf.createServer();
 pf.listen(1337, server, function(){
   console.log(':3 yay')
 });
@@ -61,8 +60,8 @@ Support for serving inline requests over a existing HTTP connection as the Flash
 Adds more origins to the policy file you can add as many arguments as you like.
 
 ```js
-var pf = require('policyfile');
-pf.createServer(['google.com:80']);
+var pf = require('policyfile').createServer(['google.com:80']);
+
 pf.listen();
 pf.add('blog.3rd-Eden.com:80', 'blog.3rd-Eden.com:8080'); // now has 3 origins
 ```
@@ -71,8 +70,8 @@ pf.add('blog.3rd-Eden.com:80', 'blog.3rd-Eden.com:8080'); // now has 3 origins
 Adds more origins to the policy file you can add as many arguments as you like.
 
 ```js
-var pf = require('policyfile');
-pf.createServer(['blog.3rd-Eden.com:80', 'blog.3rd-Eden.com:8080']);
+var pf = require('policyfile').createServer(['blog.3rd-Eden.com:80', 'blog.3rd-Eden.com:8080']);
+
 pf.listen();
 pf.remove('blog.3rd-Eden.com:8080'); // only contains the :80 version now
 ```
@@ -81,8 +80,8 @@ pf.remove('blog.3rd-Eden.com:8080'); // only contains the :80 version now
 Shuts down the server
 
 ```js
-var pf = require('policyfile');
-pf.createServer();
+var pf = require('policyfile').createServer();
+
 pf.listen();
 pf.close(); // OH NVM.
 ```
