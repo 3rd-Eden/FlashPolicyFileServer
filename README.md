@@ -66,8 +66,8 @@ pf.listen();
 pf.add('blog.3rd-Eden.com:80', 'blog.3rd-Eden.com:8080'); // now has 3 origins
 ```
 
-#### server.add
-Adds more origins to the policy file you can add as many arguments as you like.
+#### server.remove
+Removes added origins from the policy file - you can add as many arguments as you like.
 
 ```js
 var pf = require('policyfile').createServer(['blog.3rd-Eden.com:80', 'blog.3rd-Eden.com:8080']);
