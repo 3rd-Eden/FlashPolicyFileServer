@@ -136,11 +136,20 @@ module.exports = {
     httpserver.listen(port, function(){
       server.listen(port + 1, httpserver, function(){
         var client = net.createConnection(port);
+        var gotData = false;
         client.write('<policy-file-request/>\0');
         client.on('error', function(err){
           assert.ok(!err, err)
         });
+        client.on('end', function(){
+          assert.ok(gotData, 'connection closed before sending data');
+
+          // clean up
+          server.close();
+          httpserver.close();
+        });
         client.on('data', function(data){
+          gotData = true;
         
           var response = data.toString();
           console.log(response);
@@ -149,10 +158,8 @@ module.exports = {
           response.indexOf('domain="*"').should.be.above(0);
           response.indexOf('domain="google.com"').should.equal(-1);
           
-          // clean up
-          client.destroy();
-          server.close();
-          httpserver.close();
+          // cleanup done by the 'end' handler
+          client.end();
         });
       });
     });
