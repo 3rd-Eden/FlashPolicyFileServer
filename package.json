@@ -1,6 +1,6 @@
 {
   "name": "policyfile",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Arnout Kazemier",
   "description": "Flash Socket Policy File Server. A server to respond to Flash Socket Policy requests, both inline and through a dedicated server instance.",
   "keywords": [
