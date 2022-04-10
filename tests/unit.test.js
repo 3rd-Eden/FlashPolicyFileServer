@@ -12,7 +12,7 @@ module.exports = {
      fspfs.version.should.match(/^\d+\.\d+\.\d+$/);
   }
 
-  // Creating a server instace should not cause any problems
+  // Creating a server instance should not cause any problems
   // either using the new Server or createServer method.
 , 'Create Server instance': function(){
     var server = fspfs.createServer()
